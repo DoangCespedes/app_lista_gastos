@@ -1,21 +1,18 @@
 import React from 'react'
-import { ContenedorBotones, ContenedorHeader, Header, Titulo } from '../elements/Header'
-import Boton from '../elements/Boton'
+import { Header, Titulo } from '../elements/Header'
 import { BtnRegresar } from '../elements/BtnRegresar'
+import { Helmet } from 'react-helmet'
 
 export const GastosPorCategoria = () => {
   return (
     <>
+
+      <Helmet>
+				<title>Gastos por Categoría</title>
+			</Helmet>
       <Header>
-        {/* <ContenedorHeader> */}
           <BtnRegresar/>
           <Titulo>Gastos Por Categoria</Titulo>
-          {/* <ContenedorBotones>
-            <Boton to='/categorias'>Categoria</Boton>
-            <Boton to='/lista'>Lista de Gastos</Boton>
-            <Boton>X</Boton>
-          </ContenedorBotones> */}
-        {/* </ContenedorHeader> */}
       </Header>
     </>
   )

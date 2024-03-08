@@ -6,6 +6,7 @@ import WebFont from 'webfontloader'
 import Contenedor from './elements/Contenedor'
 import { AppRouter } from './router/AppRouter'
 import Fondo from './elements/Fondo'
+import { AuthProvider } from './context/AuthContext'
 
 WebFont.load({
   google: {
@@ -18,12 +19,14 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     
     
     <React.StrictMode>
-      <BrowserRouter>
-        <Contenedor>
-          <AppRouter/>
-        </Contenedor>
-      </BrowserRouter>
 
+      <AuthProvider>
+        <BrowserRouter>
+          <Contenedor>
+            <AppRouter/>
+          </Contenedor>
+        </BrowserRouter>
+      </AuthProvider>
       
     <Fondo/>
     </React.StrictMode>,
