@@ -4,12 +4,23 @@ import {Formulario, ContenedorFiltros, ContenedorBoton, InputGrande, Input} from
 import { FaPlus } from "react-icons/fa";
 import { SelectCategorias } from './SelectCategorias';
 import DatePicker from './DatePicker';
+import { getUnixTime } from "date-fns";
+import { fromUnixTime } from "date-fns";
+import agregarGasto from '../firebase/agregarGasto';
+import {useAuth} from '../context/AuthContext'
+import { Alerta } from '../elements/Alerta';
+
+
 export const FormularioGasto = () => {
 
     const [inputDescripcion, setInputDescripcion] = useState('');
 	const [inputCantidad, setInputCantidad] = useState('')
     const [categoria, setCategoria] = useState('hogar')
     const [fecha, setFecha] = useState(new Date())
+    const [estadoAlerta, setEstadoAlerta] = useState(false)
+    const [alerta, setAlerta] = useState({})
+
+    const {usuario} = useAuth();
 
     const handleChange = (e) =>{
         if(e.target.name === 'descripcion'){
@@ -19,8 +30,47 @@ export const FormularioGasto = () => {
 		}
     }
 
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        let cantidad = parseFloat(inputCantidad).toFixed(2)
+
+        if (inputDescripcion !== '' && inputCantidad !=='') {
+            if (cantidad) {
+                
+                agregarGasto({
+                    categoria: categoria,
+                    descripcion: inputDescripcion,
+                    cantidad: cantidad, 
+                    fecha: getUnixTime(fecha),
+                    uidUsuario: usuario.uid
+                }) 
+
+                .then(() => {
+                    setCategoria('hogar')
+                    setInputDescripcion('')
+                    setInputCantidad('')
+                    setFecha(new Date())
+
+                    setEstadoAlerta(true);
+                    setAlerta({ tipo: 'exito', mensaje: 'El gasto fue agregado exitosamente'} )
+                })
+
+                .catch((error) =>{
+                    setEstadoAlerta(true);
+                    setAlerta({ tipo: 'error', mensaje: 'Existe un error vuelva a intentarlo'} )
+                })
+            }else {
+                setEstadoAlerta(true);
+                setAlerta({ tipo: 'error', mensaje: 'El valor que ingresaste no es el correcto'} )
+            }
+        } else {
+            setEstadoAlerta(true);
+            setAlerta({ tipo: 'error', mensaje: 'Por favor rellena todos los campos'} )
+        }
+    }
+
   return (
-    <Formulario>
+    <Formulario onSubmit={handleSubmit}>
         <ContenedorFiltros>
             <SelectCategorias
                 categoria={categoria}
@@ -49,11 +99,16 @@ export const FormularioGasto = () => {
             />
         </div>
         <ContenedorBoton>
-            <Boton as="button" primario conIcono type="submit">
+            <Boton type="submit" as="button" primario conIcono >
                 Agregar gasto <FaPlus />
             </Boton>
         </ContenedorBoton>
-        
+        <Alerta
+            tipo={alerta.tipo}
+            mensaje={alerta.mensaje}
+            estadoAlerta={estadoAlerta}
+            setEstadoAlerta={setEstadoAlerta}
+        />
     </Formulario>
     
   )

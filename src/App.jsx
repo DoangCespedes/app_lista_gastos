@@ -4,7 +4,7 @@ import Boton from './elements/Boton'
 import { Helmet } from 'react-helmet'
 import BotonCerrarCesion from './elements/BotonCerrarCesion'
 import { FormularioGasto } from './components/FormularioGasto'
-
+import BarraTotalGastado from './components/BarraTotalGastado'
 
   
 
@@ -26,6 +26,8 @@ export const App = () => {
       </Header>
 
       <FormularioGasto/>
+
+      <BarraTotalGastado/>
     </>
   )
 }

@@ -3,19 +3,18 @@ import { ContenedorHeader, Header, Titulo} from '../elements/Header'
 import Boton from '../elements/Boton'
 import { Helmet } from 'react-helmet'
 import {ContenedorBoton, Formulario, Input} from '../elements/ElementosDeFormulario'
-import  SvgLogin  from '../imagenes/registro'
+import  SvgLogin  from '../imagenes/register.jpg'
 import { auth } from '../firebase/FirebaseConfig'
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import {useNavigate} from 'react-router-dom';
 import { Alerta } from '../elements/Alerta'
 // import styled from 'styled-components';
 
-// const Svg = styled(SvgLogin)`
+// const Svg = styled(SvgLogi
 //   width: 100%;
 //   max-height: 6.25rem;
 //   margin-botton:1.25rem;
-// `
-
+// 
 
 export const RegistroUsuario = () => {
   const navigate = useNavigate();
@@ -118,9 +117,10 @@ export const RegistroUsuario = () => {
           </div>
         </ContenedorHeader>
       </Header>
-
       <Formulario onSubmit={handleSubmit}>
-        <SvgLogin  style={{width: '100%',maxHeight:'6.25rem', marginBotton:'1.25rem' }}/>
+        <div style={{width: '100%', display:'flex', justifyContent:'center'}}>
+          <img src={SvgLogin}/>
+        </div>
         <Input
           type='email'
           name='email'
