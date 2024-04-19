@@ -3,7 +3,7 @@ import { ContenedorHeader, Header, Titulo} from '../elements/Header'
 import Boton from '../elements/Boton'
 import { Helmet } from 'react-helmet'
 import {ContenedorBoton, Formulario, Input} from '../elements/ElementosDeFormulario'
-import  SvgLogin  from '../imagenes/register.jpg'
+import  SvgLogin  from '../imagenes/logo1.png'
 import { auth } from '../firebase/FirebaseConfig'
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import {useNavigate} from 'react-router-dom';

@@ -3,7 +3,7 @@ import { ContenedorHeader, Header, Titulo} from '../elements/Header'
 import Boton from '../elements/Boton'
 import { Helmet } from 'react-helmet'
 import {ContenedorBoton, Formulario, Input} from '../elements/ElementosDeFormulario'
-import  SvgLogin  from '../imagenes/login'
+import  SvgLogin  from '../imagenes/logo1.png'
 import { useNavigate } from 'react-router'
 import { auth } from '../firebase/FirebaseConfig'
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -91,7 +91,9 @@ export const InicioSesion = () => {
     </Header>
 
     <Formulario onSubmit={handleSubmit }>
-      <SvgLogin  style={{width: '100%',maxHeight:'6.25rem', marginBotton:'1.25rem' }}/>
+    <div style={{width: '100%', display:'flex', justifyContent:'center'}}>
+      <img src={SvgLogin}  />
+    </div>
       <Input
         type='email'
         name='email'
