@@ -5,8 +5,6 @@ import { Helmet } from 'react-helmet'
 import {
   Lista,
   ElementoLista,
-  ListaDeCategorias,
-  ElementoListaCategorias,
   Categoria,
   Descripcion,
   Valor,
@@ -29,21 +27,33 @@ import { Link } from 'react-router-dom'
 import Boton from '../elements/Boton'
 import { format, fromUnixTime } from 'date-fns'
 import {es} from 'date-fns/locale'
+import borrarGasto from '../firebase/borrarGasto'
 
 export const ListaDeGastos = () => {
   
   const gastos = useObtenerGastos()
+  const obtenerMasGastos = useObtenerGastos()
+  const hayMasPorCargar = useObtenerGastos()
   
   const formatearFecha = (fecha) =>{
     return format(fromUnixTime(fecha) , `dd 'de' MMMM 'de' yyyy`, {locale: es})
   }
 
+  console.log(obtenerMasGastos, " obtenerMasGastos ")
+  console.log(hayMasPorCargar, " hayMasPorCargar ")
+  console.log(gastos, " gastos ")
+
+
   const fechaEsIgual = (gastos, index, gasto) => {
     if (index !== 0) {
       const fechaActual = formatearFecha(gasto.fecha);
-      // const fechaGastoAnterior = formatearFecha(gastos[index -1].fecha);
-
-      console.log(fechaActual , "FECHAS")
+       const fechaGastoAnterior = formatearFecha(gastos[0][index -1].fecha);
+      
+       if (fechaActual === fechaGastoAnterior) {
+          return true;
+       }else {
+        return false;
+       }
     }
   }
   
@@ -80,7 +90,7 @@ export const ListaDeGastos = () => {
                   <BotonAccion as={Link} to={`/editar/${gasto.id}`}>
                     <MdEdit/>
                   </BotonAccion>
-                  <BotonAccion>
+                  <BotonAccion onClick={() => borrarGasto(gasto.id)}>
                     <AiFillDelete/>
                   </BotonAccion>
                 </ContenedorBotones>
@@ -89,9 +99,11 @@ export const ListaDeGastos = () => {
           )
         })}
 
-          <ContenedorBotonCentral>
-            <BotonCargarMas>Cargar Mas</BotonCargarMas>
-          </ContenedorBotonCentral>
+          { hayMasPorCargar === false &&
+            <ContenedorBotonCentral>
+            <BotonCargarMas onClick={() => obtenerMasGastos()}>Cargar Mas</BotonCargarMas>
+            </ContenedorBotonCentral>
+          }
 
           {gastos.length === 0 &&
             <ContenedorSubtitulo>
