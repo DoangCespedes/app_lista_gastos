@@ -15,7 +15,7 @@ const useObtenerGastos = () => {
 			where('uidUsuario', '==', usuario.uid),
 			orderBy('fecha', 'desc'),
 			limit(10),
-			// startAfter(ultimoGasto)
+			startAfter(ultimoGasto)
 		);
 
 		onSnapshot(consulta, (snapshot) => {

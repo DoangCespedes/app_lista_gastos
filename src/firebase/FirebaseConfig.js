@@ -22,6 +22,16 @@ const firebaseConfig = {
   messagingSenderId: "504562455591",
   appId: "1:504562455591:web:d28d31b2dad7eafdfaea02"
 
+  // ----------------------------------------------------------
+
+  // apiKey: "AIzaSyBi6ivahLg-CgBnrDJeKZ24bDLdVMAwl28",
+  // authDomain: "app-lista-gastos-3825b.firebaseapp.com",
+  // projectId: "app-lista-gastos-3825b",
+  // storageBucket: "app-lista-gastos-3825b.appspot.com",
+  // messagingSenderId: "417754311984",
+  // appId: "1:417754311984:web:9def1f4c19b168e13eacf5",
+  // measurementId: "G-R56XG8NGSL"
+
   
 };
 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Boton from '../elements/Boton'
 import {Formulario, ContenedorFiltros, ContenedorBoton, InputGrande, Input} from '../elements/ElementosDeFormulario'
 import { FaPlus } from "react-icons/fa";
@@ -9,9 +9,11 @@ import { fromUnixTime } from "date-fns";
 import agregarGasto from '../firebase/agregarGasto';
 import {useAuth} from '../context/AuthContext'
 import { Alerta } from '../elements/Alerta';
+import { useNavigate } from 'react-router';
+import editarGasto from '../firebase/editarGasto';
 
 
-export const FormularioGasto = () => {
+export const FormularioGasto = ({gasto}) => {
 
     const [inputDescripcion, setInputDescripcion] = useState('');
 	const [inputCantidad, setInputCantidad] = useState('')
@@ -21,6 +23,26 @@ export const FormularioGasto = () => {
     const [alerta, setAlerta] = useState({})
 
     const {usuario} = useAuth();
+    const navigate = useNavigate();
+
+
+    useEffect(() => {
+		// Comprobamos si ya hay algun gasto.
+		// De ser asi establecemos todo el state con los valores del gasto.
+		if(gasto){
+            
+			// Comprobamos que el gasto sea del usuario actual.
+			// Para eso comprobamos el uid guardado en el gasto con el uid del usuario.
+			if(gasto.uidUsuario === usuario.uid){
+				setCategoria(gasto.categoria);
+                setFecha(fromUnixTime(gasto.fecha));
+                setInputDescripcion(gasto.descripcion);
+                setInputCantidad(gasto.cantidad);
+			} else {
+				navigate('/lista');
+			}
+		}
+	}, [gasto, usuario, navigate]);
 
     const handleChange = (e) =>{
         if(e.target.name === 'descripcion'){
@@ -36,7 +58,21 @@ export const FormularioGasto = () => {
 
         if (inputDescripcion !== '' && inputCantidad !=='') {
             if (cantidad) {
-                
+                // if(gasto){
+                //     console.log(gasto, "PONTE LAS PILAS")
+				// 	editarGasto({
+				// 		id: gasto.id,
+				// 		categoria: categoria,
+				// 		descripcion: inputDescripcion,
+				// 		cantidad: cantidad,
+				// 		fecha: getUnixTime(fecha)
+				// 	}).then(() => {
+				// 		navigate('/lista');
+                //         cambio()
+				// 	}).catch((error) => {
+				// 		console.log(error);
+				// 	})
+				// } else {
                 agregarGasto({
                     categoria: categoria,
                     descripcion: inputDescripcion,
@@ -59,7 +95,8 @@ export const FormularioGasto = () => {
                     setEstadoAlerta(true);
                     setAlerta({ tipo: 'error', mensaje: 'Existe un error vuelva a intentarlo'} )
                 })
-            }else {
+            // }
+        }else {
                 setEstadoAlerta(true);
                 setAlerta({ tipo: 'error', mensaje: 'El valor que ingresaste no es el correcto'} )
             }
@@ -100,7 +137,7 @@ export const FormularioGasto = () => {
         </div>
         <ContenedorBoton>
             <Boton type="submit" as="button" primario conIcono >
-                Agregar gasto <FaPlus />
+            {gasto ? 'Editar Gasto' : 'Agregar Gasto'} <FaPlus />
             </Boton>
         </ContenedorBoton>
         <Alerta
